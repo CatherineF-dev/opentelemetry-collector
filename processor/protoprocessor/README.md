@@ -3,7 +3,7 @@
 git checkout tags/v0.31.0 -b v0.31.0
 ```
 
-2. run this test failed. 
+2. add `proto_test.go` and run this test failed. 
 ```
 go test -timeout 30s -run ^TestMetricsFromOtlpProtoBytesOldVersion2$
 ```
