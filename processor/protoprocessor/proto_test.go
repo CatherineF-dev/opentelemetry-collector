@@ -8,7 +8,6 @@ import (
 	metricspb "github.com/census-instrumentation/opencensus-proto/gen-go/metrics/v1"
 	resourcepb "github.com/census-instrumentation/opencensus-proto/gen-go/resource/v1"
 	"github.com/google/go-cmp/cmp"
-//	"github.com/open-telemetry/opentelemetry-collector-contrib/pkg/translator/opencensus"
         "go.opentelemetry.io/collector/translator/internaldata"
 	"github.com/stretchr/testify/assert"
 	"go.opentelemetry.io/collector/model/otlp"
@@ -58,7 +57,6 @@ func collectMds(nextMs []pdata.Metrics) []metricData {
 	for _, m := range nextMs {
 		rms := m.ResourceMetrics()
 		for i := 0; i < rms.Len(); i++ {
-			// node, resource, metrics := opencensus.ResourceMetricsToOC(rms.At(i))
 			node, resource, metrics := internaldata.ResourceMetricsToOC(rms.At(i))
 			nextMds = append(nextMds, metricData{node, resource, metrics})
 		}
@@ -68,7 +66,6 @@ func collectMds(nextMs []pdata.Metrics) []metricData {
 
 func TestMetricsFromOtlpProtoBytesOldVersion2(t *testing.T) {
 	expectedMd := createDoubleMetricsDataWithTimestamp("test", timestamppb.New(time.Unix(1642012747, 0)))
-	// Bytes representation from gke-metrics-agent v1.1.0-anthos.7 version
 	metricBytesVersion1_1 := []byte{10, 86, 10, 0, 18, 82, 10, 0, 18, 78, 10, 4, 116, 101, 115, 116, 42, 70, 10, 68, 10, 23, 10, 6, 108, 97, 98, 101, 108, 49, 18, 13, 108, 97, 98, 101, 108, 49, 45, 118, 97, 108, 117, 101, 49, 10, 23, 10, 6, 108, 97, 98, 101, 108, 50, 18, 13, 108, 97, 98, 101, 108, 50, 45, 118, 97, 108, 117, 101, 49, 17, 0, 46, 153, 197, 228, 153, 201, 22, 25, 0, 46, 153, 197, 228, 153, 201, 22}
 
 	ms, err := metricsFromOtlpProtoBytes(metricBytesVersion1_1)
